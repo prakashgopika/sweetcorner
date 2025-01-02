@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup and Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            background-image: url("https://img.freepik.com/premium-photo/creative-aesthetic-food-concept-romantic-dessert-tin-can-pastel-pink-background_1295979-2827.jpg?w=360");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .container {
+            font-family: lucida handwriting;
+            width: 300px;
+            background: transparent;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: rgb(242, 72, 129);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: pink;
+        }
+        .switch {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="signup-container">
+        <h2>Signup</h2>
+        <div class="form-group">
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" required>
+        </div>
+        <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" required>
+        </div>
+        <div class="form-group">
+            <label for="signup-confirm-password">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" required>
+        </div>
+        <button class="btn" onclick="signup()">Signup</button>
+        <div class="switch">
+            <a href="#" onclick="showLogin()">Already have an account? Login</a>
+        </div>
+        <p class="error" id="signup-error"></p>
+    </div>
+
+    <div class="container" id="login-container" style="display: none;">
+        <h2>Login</h2>
+        <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required>
+        </div>
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required>
+        </div>
+        <button class="btn" onclick="window.location.href='http://localhost:7000/admin-form'">Login</button>
+        <div class="switch">
+            <a href="#" onclick="showSignup()">Don't have an account? Signup</a>
+        </div>
+        <p class="error" id="login-error"></p>
+    </div>
+
+    <script>
+        let users = {};
+
+        function showSignup() {
+            document.getElementById('signup-container').style.display = 'block';
+            document.getElementById('login-container').style.display = 'none';
+        }
+
+        function showLogin() {
+            document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        }
+
+        function signup() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            const errorElement = document.getElementById('signup-error');
+
+            if (password !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            if (users[username]) {
+                errorElement.textContent = 'Username already exists.';
+                return;
+            }
+
+            users[username] = password;
+            alert('Signup successful! Please login.');
+            showLogin();
+        }
+
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+
+            if (users[username] && users[username] === password) {
+                alert('Login successful!');
+
+                window.location.href = 'http://localhost:7000/admin-form.html';
+            } else {
+                errorElement.textContent = 'Invalid username or password.';
+            }
+        }
+    </script>
+</body>
+</html>

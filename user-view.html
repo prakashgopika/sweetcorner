@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Order your favorite desserts from Dessert Cult. Search and explore our wide variety of products.">
+    <title>User View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: pink;
+            padding: 20px;
+            background-image: url("https://i.fbcd.co/products/resized/resized-750-500/c-1000-designbundle-pink-ice-cream-13-12-69865814d116e36c6d0862141ac58e4cdd12d38dbe6b94614d6a96a011f1f61e.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent;
+            padding: 10px 20px;
+            color: white;
+            font-family: lucida handwriting;
+        }
+
+        /* Logo */
+        .navbar .logo img {
+            height: 70px;
+        }
+
+        /* Nav Links */
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-links li {
+            margin: 0 15px;
+        }
+
+        .navbar .nav-links a {
+            color: rgb(7, 7, 7);
+            text-decoration: none;
+            font-size: large;
+            transition: color 0.3s;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #b56e98;
+        }
+
+        /* Admin Button */
+        .navbar .admin-button {
+            background-color: palevioletred;
+            color: #fff;
+            padding: 7px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .navbar .admin-button:hover {
+            background-color: #e252a6;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-family: cursive;
+            margin-bottom: 20px;
+            font-family: lucida handwriting;
+        }
+
+        .header h1 {
+            font-size: 25px;
+            margin: 0;
+        }
+
+        .name {
+            color: orange;
+        }
+
+        .name1 {
+            color: rgb(206, 50, 102);
+        }
+
+        h1 {
+            text-align: center;
+            font-family: lucida handwriting;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 50%;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #desserts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            height: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-bar input {
+                width: 90%;
+            }
+
+            #desserts-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="https://www.brandbucket.com/sites/default/files/logo_uploads/444042/large_dessertcult.png" alt=""> <!-- Replace with your logo file -->
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <!-- Admin Button -->
+        <a href="/login" class="admin-button">Admin</a>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 class="name">Dessert</h1>
+        <h1 class="name1">Cult</h1>
+    </div>
+
+    <h1>Order Your Products</h1>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search-box" placeholder="Search desserts by name or description..." oninput="filterDesserts()">
+    </div>
+
+    <!-- Desserts Container -->
+    <div id="desserts-container">
+        <p>Loading desserts...</p>
+    </div>
+
+    <script>
+        let desserts = []; // Global array to store fetched desserts
+
+        // Fetch desserts from the backend
+        fetch('/desserts')
+            .then(res => res.json())
+            .then(data => {
+                // Sort desserts by name in ascending order
+                desserts = data.sort((a, b) => a.name.localeCompare(b.name));
+                renderDesserts(desserts); // Render all desserts initially
+            })
+            .catch(err => {
+                console.error('Error fetching desserts:', err);
+                document.getElementById('desserts-container').innerHTML = '<p>Unable to load desserts. Please try again later.</p>';
+            });
+
+        // Function to render desserts in the container
+        function renderDesserts(data) {
+            const container = document.getElementById('desserts-container');
+            container.innerHTML = ''; // Clear existing desserts
+            data.forEach(dessert => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="/uploads/${dessert.image}" alt="Image of ${dessert.name}">
+                    <h3>${dessert.name}</h3>
+                    <p>${dessert.description}</p>
+                    <p>Price: ₹${dessert.price}</p>
+                `;
+                container.appendChild(card);
+            });
+
+            if (data.length === 0) {
+                container.innerHTML = '<p>No desserts found matching your query.</p>';
+            }
+        }
+
+        // Function to filter desserts based on the search input
+        function filterDesserts() {
+            const query = document.getElementById('search-box').value.toLowerCase();
+            const filtered = desserts.filter(dessert =>
+                dessert.name.toLowerCase().includes(query) ||
+                dessert.description.toLowerCase().includes(query)
+            );
+            renderDesserts(filtered); // Render filtered desserts
+        }
+    </script>
+</body>
+
+</html>

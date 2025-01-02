@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Dessert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+            background-image: url("https://whimsyandspice.com/wp-content/uploads/2023/06/28-Pretty-Pink-Desserts-That-Make-For-Stylishly-Delicious-Treats.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent;
+            padding: 10px 20px;
+            color: white;
+            font-family: lucida handwriting;
+            margin-bottom: 600px;
+            margin-right: 400px;
+            margin-left: -400px;
+        }
+
+        /* Logo */
+        .navbar .logo img {
+            height: 70px;
+        }
+
+        /* Nav Links */
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-links li {
+            margin: 0 15px;
+        }
+
+        .navbar .nav-links a {
+            color: rgb(7, 7, 7);
+            text-decoration: none;
+            font-size: large;
+            transition: color 0.3s;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #b56e98;
+        }
+
+        /* Admin Button */
+        .navbar .admin-button {
+            background-color: palevioletred;
+            color: #fff;
+            padding: 7px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .navbar .admin-button:hover {
+            background-color: #e252a6;
+        }
+
+        h1 {
+            font-family: Lucida Handwriting;
+            margin-left: -600px;
+            margin-top: 150px;
+        }
+
+        form {
+            background: transparent;
+            padding: 20px;
+            padding-right: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-top: 200px;
+            margin-left: -450px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #9b8484;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #f38489;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e0668c;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 15px;
+            }
+
+            input, textarea, button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="https://www.brandbucket.com/sites/default/files/logo_uploads/444042/large_dessertcult.png" alt=""> <!-- Replace with your logo file -->
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <!-- Admin Button -->
+        <button class="admin-button" onclick="window.location.href='http://localhost:7001'">User</button>
+    </div>
+
+    <h1>Admin Panel: Add Dessert</h1>
+    <form action="/add-dessert" method="POST" enctype="multipart/form-data">
+        <label for="name">Dessert Name:</label>
+        <input type="text" name="name" required>
+        
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea>
+        
+        <label for="price">Price:</label>
+        <input type="number" name="price" required>
+        
+        <label for="image">Image:</label>
+        <input type="file" name="image" accept="image/*" required>
+        <button class="btn" onclick="window.location.href='http://localhost:7001/user-view'">Add Dessert</button>
+    </form>
+
+    <script>
+        // Check if the page was reloaded with a success flag
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success') && urlParams.get('success') === 'true') {
+            alert('Your dessert has been successfully added!');
+        }
+    </script>
+</body>
+</html>
